@@ -64,4 +64,16 @@ export class UploadsService {
 		}
 	}
 
+    // Get User Profile Picture From The Database
+	async getUserProfilePictureFromTheDatabase(userId: string, response: any){
+		const upload = await this.__uploadsModel.findOne({ user: userId }).exec();
+		if (upload) return response.sendFile(upload.filename, { root: upload.destination });
+	}
+
+    // Get uploaded backup From The Database
+	async getBackUpFromTheDatabase(productId: string, response: any){
+		const upload = await this.__uploadsModel.findOne({ device: productId }).exec();
+		if (upload) return response.sendFile(upload.filename, { root: upload.destination });
+	}
+
 }
