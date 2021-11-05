@@ -8,7 +8,7 @@ export class AuthController {
     constructor(private __auth: AuthService){}
 
     @Post('register')
-	async registerUser(@Body() user: { lastname: string, name: string, email: string, password: string, phone:string }){
+	async registerUser(@Body() user: {name: string, email: string, password: string, phone:string }){
 		return await this.__auth.registerUserIntoDatabase(user);
 	}
 

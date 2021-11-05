@@ -9,7 +9,7 @@ export class UserController {
 
   // Add New User
 	@Post()
-	async addNewUser(@Body() user: { lastname: string, name: string, email: string, phone: string, password: string }){
+	async addNewUser(@Body() user: {name: string, email: string, phone: string, password: string }){
 		return await this.__user.addNewUserToTheDatabase(user);
 	}
 
@@ -27,7 +27,7 @@ export class UserController {
 
   // Update One User
 	@Patch('/:id')
-	async updateUser(@Param('id') userId: string, @Body() user: { lastname: string, name: string, email: string, phone: string, password: string  }){
+	async updateUser(@Param('id') userId: string, @Body() user: { name: string, email: string, phone: string, password: string  }){
 		return await this.__user.updateOneUserFromTheDatabase(userId, user);
 	}
 

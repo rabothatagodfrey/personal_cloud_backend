@@ -39,34 +39,35 @@ export class AuthService {
         return { message: 'Successfully Registered ' }
 
         }catch (error){
-        if (error.code === 11000 && error.keyValue.email) throw new BadRequestException(`Email already taken, please sign in or sign up`);
+       
+        this.logger.error(error);
+		if (error.code === 11000 && error.keyValue.email) throw new BadRequestException(`Email already taken, please sign in or sign up`);
+
+
         
         if (error.response.errors){
 
-                    const err = error.response.errors;
-                    if (err.name) throw new BadRequestException(err.name.message);
-                    throw new BadRequestException(err);
-                }
+                const err = error.response.errors;
+                if (err.name) throw new BadRequestException(err.name.message);
+                throw new BadRequestException(err);
+            }
 
-                throw new BadRequestException(error.message);
+        throw new BadRequestException(error.message);
 
         }
     }
 
     async authenticateUserWithUsersInDatabase(credentials :any){
+
         const user = await this.__userModel.findOne({ email: credentials.email });
-            if (!user) throw new BadRequestException('Invalid credentials!');
-            if (!await bcrypt.compare(credentials.password, user.password)) throw new BadRequestException('Invalid credentials!');
+        if (!user) throw new BadRequestException('Invalid credentials!');
+        if (!await bcrypt.compare(credentials.password, user.password)) throw new BadRequestException('Invalid credentials!');
     
-        try {
-            const token = await this.__jwt.signAsync({ id: user.id });
-            return token;
-
-        } catch (error) {
-
-            this.logger.error(error);
-
-        }
+        return await this.__jwt.signAsync({ user: user.id}).then((token) => {
+            return {token:token}
+        }).catch(err => {
+            return err
+        })
     
       }
     

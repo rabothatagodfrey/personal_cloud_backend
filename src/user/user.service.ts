@@ -23,7 +23,7 @@ export class UserService {
 			const model_user = new this.__userModel(new_user);
 			const user = await model_user.save();
 			
-			const results = { id: user.id, name: user.name,lastname: user.lastname, email: user.email, password: user.password, phone: user.phone};
+			const results = { id: user.id, name: user.name, email: user.email, password: user.password, phone: user.phone};
 
 			return results;
 
@@ -46,7 +46,7 @@ export class UserService {
     // Get One User From The Database
 	async getOneUserFromTheDatabase(userId: string){
 		const user = await this.findOneUserFromTheDatabase(userId);
-		const results = { id: user.id, name: user.name,lastname: user.lastname, email: user.email,password: user.password,phone: user.phone };
+		const results = { id: user.id, name: user.name, email: user.email,password: user.password,phone: user.phone };
 
 		return results;
 	}
